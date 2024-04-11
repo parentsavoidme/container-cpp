@@ -1,0 +1,2 @@
+﻿FileName.obj : error LNK2005: main уже определен в cont.obj
+C:\Users\chern\source\repos\cont\x64\Debug\cont.exe : fatal error LNK1169: обнаружен многократно определенный символ - один или более
