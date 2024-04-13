@@ -1,3 +1,0 @@
-﻿  FileName.cpp
-C:\Users\chern\source\repos\co\FileName.cpp(126,21): warning C4244: return: преобразование "__int64" в "int", возможна потеря данных
-  co.vcxproj -> C:\Users\chern\source\repos\co\x64\Debug\co.exe
