@@ -205,7 +205,7 @@ public:
     {
         using iterator_category = std::forward_iterator_tag;
         using difference_type = std::ptrdiff_t;
-        using value_type = Node;
+        using value_type = T;
         using pointer = Node*;
         using reference = Node&;
 
@@ -233,7 +233,7 @@ public:
     {
         using iterator_category = std::forward_iterator_tag;
         using difference_type = std::ptrdiff_t;
-        using value_type = const Node;
+        using value_type = const T;
         using pointer = const Node*;
         using reference = const Node&;
 
