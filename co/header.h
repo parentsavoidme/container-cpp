@@ -4,30 +4,32 @@
 #include <concepts>
 using namespace std;
 
+template <typename T>
+ 
 struct Node
 {
-    int data;
-    Node* next;
+    T data;
+    Node<T>* next;
 };
 
 
-//template<Node* value>
-//concept Positive = value->data > 0;
+template <typename T,size_t N>
+concept NoMoreThan = sizeof(T) <= N;
 
 template <typename T, size_t N>
 class MyList {
 
 private:
     int count;
-    Node* head;
+    Node<T>* head;
 public:
 
     MyList() = default;//1
 
     ~MyList() //6
     {
-        Node* temp = head;
-        Node* temp1 = nullptr;
+        Node<T>* temp = head;
+        Node<T>* temp1 = nullptr;
         if (temp != nullptr) {
             do {
                 temp1 = temp;
@@ -39,7 +41,7 @@ public:
     }
 
     MyList(const MyList& other) : head(nullptr) {//2
-        Node* temp = other.head;
+        Node<T>* temp = other.head;
         while (temp != nullptr)
         {
             add(temp->data);
@@ -71,7 +73,7 @@ public:
     size_t size()//16
     {
         int ss = 0;
-        Node* temp = head;
+        Node<T>* temp = head;
         while (temp != nullptr)
         {
             temp = temp->next;
@@ -87,7 +89,7 @@ public:
 
     void swap(MyList& other)//13
     {
-        Node* temp = head;
+        Node<T>* temp = head;
         int c = this->count;
         this->count = other.count;
         other.count = c;
@@ -97,14 +99,15 @@ public:
 
     void add(T Data)
     {
-        if (count < N)
-        {
-            Node* temp = new Node;
+       if (count < N)
+       {
+            //Node* temp = new Node;
+            Node<T>* temp = new Node<T>;
             temp->next = head;
             temp->data = Data;
             head = temp;
             count++;
-        }
+       }
         //else
         //    cout << "list full"<<endl;
     }
@@ -119,7 +122,7 @@ public:
 
     void del()
     {
-        Node* temp = head;
+        Node<T>* temp = head;
         if (temp == nullptr)
             return;
         else if (temp->next == nullptr)
@@ -134,12 +137,13 @@ public:
             delete temp->next;
             temp->next = nullptr;
         }
+        count--;
     }
 
     bool operator==(MyList& other)//11
     {
-        Node* temp1 = head;
-        Node* temp2 = other.head;
+        Node<T>* temp1 = head;
+        Node<T>* temp2 = other.head;
         while (temp1 != nullptr && temp2 != nullptr)
         {
             if (temp1->data != temp2->data)
@@ -162,11 +166,11 @@ public:
             return *this;
         while (head != nullptr)
         {
-            Node* temp = head;
+            Node<T>* temp = head;
             head = head->next;
             delete temp;
         }
-        Node* temp1 = other.head;
+        Node<T>* temp1 = other.head;
         while (temp1 != nullptr)
         {
             add(head, temp1->data);
@@ -176,7 +180,7 @@ public:
     }
 
     void print() {
-        Node* temp = head;
+        Node<T>* temp = head;
         if (temp == nullptr) {
             cout << "list's empty" << endl;
             return;
@@ -189,8 +193,8 @@ public:
     }
 
     void free() {
-        Node* temp = head;
-        Node* temp1 = nullptr;
+        Node<T>* temp = head;
+        Node<T>* temp1 = nullptr;
         if (temp != nullptr) {
             do {
                 temp1 = temp;
@@ -205,9 +209,9 @@ public:
     {
         using iterator_category = std::forward_iterator_tag;
         using difference_type = std::ptrdiff_t;
-        using value_type = T;
-        using pointer = Node*;
-        using reference = Node&;
+        using value_type = Node<T>;
+        using pointer = Node<T>*;
+        using reference = Node<T>&;
 
         Iterator(pointer ptr) : m_ptr(ptr) {}
 
@@ -233,9 +237,9 @@ public:
     {
         using iterator_category = std::forward_iterator_tag;
         using difference_type = std::ptrdiff_t;
-        using value_type = const T;
-        using pointer = const Node*;
-        using reference = const Node&;
+        using value_type = const Node<T>;
+        using pointer = const Node<T>*;
+        using reference = const Node<T>&;
 
         ConstIterator(pointer ptr) : m_ptr(ptr) {}
 
