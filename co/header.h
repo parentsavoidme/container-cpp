@@ -23,7 +23,23 @@ private:
     int count;
     Node<T>* head;
 public:
+    int getcount()
+    {
+        return count;
+    }
 
+    void setcount(int c)
+    {
+        count = c;
+    }
+    Node <T>* getHead() {
+        return head;
+    }
+
+    void sethead(Node<T>* headcur)
+    {
+        head = headcur;
+    }
     MyList() = default;//1
 
     ~MyList() //6
@@ -279,18 +295,13 @@ public:
 };
 
 
-template<typename T, size_t N>
-void swap(MyList<T, N>& l1, MyList<T, N>& l2) 
+template<typename T,size_t N>
+void swap(MyList <T,N>& head1 , MyList <T, N>& head2)
 {
-    l1.swap(l2);
+    Node<T>* temp = head1.getHead();
+    head1.sethead(head2.getHead());
+    head2.sethead(temp);
+    int temp1 = head1.getcount();
+    head1.setcount(head2.getcount());
+    head2.setcount(temp1);
 }
-
-
-
-
-
-
-
-
-
-
