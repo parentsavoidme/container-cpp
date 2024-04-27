@@ -23,23 +23,75 @@ private:
     int count;
     Node<T>* head;
 public:
-    int getcount()
+    struct Iterator
     {
-        return count;
-    }
+        using iterator_category = std::forward_iterator_tag;
+        using difference_type = std::ptrdiff_t;
+        using value_type = Node<T>;
+        using pointer = Node<T>*;
+        using reference = Node<T>&;
 
-    void setcount(int c)
+        Iterator(pointer ptr) : m_ptr(ptr) {}
+
+        reference operator*() const { return *m_ptr; }
+        pointer operator->() { return m_ptr; }
+        Iterator& operator++()
+        {
+            m_ptr = m_ptr->next;
+            return *this;
+        }
+        Iterator operator++(int)
+        {
+            Iterator tmp = *this; m_ptr = m_ptr->next; return tmp;
+        }
+        friend bool operator== (const Iterator& a, const Iterator& b) { return a.m_ptr == b.m_ptr; };
+        friend bool operator!= (const Iterator& a, const Iterator& b) { return a.m_ptr != b.m_ptr; };
+
+    private:
+        pointer m_ptr;
+    };
+
+    struct ConstIterator
     {
-        count = c;
-    }
+        using iterator_category = std::forward_iterator_tag;
+        using difference_type = std::ptrdiff_t;
+        using value_type = const Node<T>;
+        using pointer = const Node<T>*;
+        using reference = const Node<T>&;
+
+        ConstIterator(pointer ptr) : m_ptr(ptr) {}
+
+        reference operator*() const { return *m_ptr; }
+        pointer operator->() { return m_ptr; }
+        ConstIterator& operator++() { m_ptr = m_ptr->next; return *this; }
+        ConstIterator operator++(int) { Iterator tmp = *this; m_ptr = m_ptr->next; return tmp; }
+        friend bool operator== (const ConstIterator& a, const ConstIterator& b) { return a.m_ptr == b.m_ptr; };
+        friend bool operator!= (const ConstIterator& a, const ConstIterator& b) { return a.m_ptr != b.m_ptr; };
+
+    private:
+        pointer m_ptr;
+    };
+
+    using value_type = T;
+    using reference = T&;
+    using const_reference = const T&;
+    using iterator = Iterator;
+    using const_iterator = ConstIterator;
+    using difference_type = ptrdiff_t;
+    using size_type = size_t;
+
+
     Node <T>* getHead() {
         return head;
     }
 
-    void sethead(Node<T>* headcur)
+
+    size_t size()//16
     {
-        head = headcur;
+        return count;
     }
+
+
     MyList() = default;//1
 
     ~MyList() //6
@@ -86,21 +138,10 @@ public:
         return (head == nullptr);
     }
 
-    size_t size()//16
-    {
-        int ss = 0;
-        Node<T>* temp = head;
-        while (temp != nullptr)
-        {
-            temp = temp->next;
-            ss++;
-        }
-        return ss;
-    }
 
     size_t max_size()//15
     {
-        return 32;
+        return N;
     }
 
     void swap(MyList& other)//13
@@ -221,55 +262,6 @@ public:
         head = nullptr;
     }
 
-    struct Iterator
-    {
-        using iterator_category = std::forward_iterator_tag;
-        using difference_type = std::ptrdiff_t;
-        using value_type = Node<T>;
-        using pointer = Node<T>*;
-        using reference = Node<T>&;
-
-        Iterator(pointer ptr) : m_ptr(ptr) {}
-
-        reference operator*() const { return *m_ptr; }
-        pointer operator->() { return m_ptr; }
-        Iterator& operator++()
-        {
-            m_ptr = m_ptr->next;
-            return *this;
-        }
-        Iterator operator++(int)
-        {
-            Iterator tmp = *this; m_ptr = m_ptr->next; return tmp;
-        }
-        friend bool operator== (const Iterator& a, const Iterator& b) { return a.m_ptr == b.m_ptr; };
-        friend bool operator!= (const Iterator& a, const Iterator& b) { return a.m_ptr != b.m_ptr; };
-
-    private:
-        pointer m_ptr;
-    };
-
-    struct ConstIterator
-    {
-        using iterator_category = std::forward_iterator_tag;
-        using difference_type = std::ptrdiff_t;
-        using value_type = const Node<T>;
-        using pointer = const Node<T>*;
-        using reference = const Node<T>&;
-
-        ConstIterator(pointer ptr) : m_ptr(ptr) {}
-
-        reference operator*() const { return *m_ptr; }
-        pointer operator->() { return m_ptr; }
-        ConstIterator& operator++() { m_ptr=m_ptr->next; return *this; }
-        ConstIterator operator++(int) { Iterator tmp = *this; m_ptr = m_ptr->next; return tmp; }
-        friend bool operator== (const ConstIterator& a, const ConstIterator& b) { return a.m_ptr == b.m_ptr; };
-        friend bool operator!= (const ConstIterator& a, const ConstIterator& b) { return a.m_ptr != b.m_ptr; };
-
-    private:
-        pointer m_ptr;
-    };
-
     ConstIterator cbegin()//9
     {
         return ConstIterator(head);
@@ -298,10 +290,15 @@ public:
 template<typename T,size_t N>
 void swap(MyList <T,N>& head1 , MyList <T, N>& head2)
 {
-    Node<T>* temp = head1.getHead();
-    head1.sethead(head2.getHead());
-    head2.sethead(temp);
-    int temp1 = head1.getcount();
-    head1.setcount(head2.getcount());
-    head2.setcount(temp1);
+    head1.swap(head2);
 }
+
+
+
+
+
+
+
+
+
+
